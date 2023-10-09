@@ -1,0 +1,39 @@
+{
+  "dependencies": {
+    "cypress": "^12.17.4"
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^18.0.4",
+    "@cypress/webpack-preprocessor": "^5.17.1",
+    "cypress-cucumber-attach-screenshots-to-failed-steps": "^1.0.0",
+    "cypress-xpath": "^2.0.1",
+    "multiple-cucumber-html-reporter": "^3.4.0"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": "cypress/support/step_definations/**/*.js",
+    "html": {
+      "enabled": true,
+      "output": "cypress/reports/cucumber-html/cucumber-report.html"
+    },
+    "messages": {
+      "enabled": true,
+      "output": "cypress/reports/cucumber-ndjson/cucumber-report.ndjson"
+    },
+    "json": {
+      "enabled": true,
+      "formatter": "cucumber-json-formatter",
+      "output": "cypress/reports/cucumber-json/cucumber-report.json"
+    }
+  },
+  "scripts": {
+    "full-regression-headed-chrome": "cypress run --headed --browser chrome --spec 'cypress/e2e/*.feature'&& node cucumber-html-report.js",
+    "full-regression-headless-chrome": "cypress run --browser chrome --spec 'cypress/e2e/*.feature' && node cucumber-html-report.js",
+    "contact-us-tests-headed-chrome": "cypress run --headed --browser chrome --spec 'cypress/e2e/Contact_Us.feature'",
+    "contact-us-tests-headed": "cypress run -e TAGS=\"@contact-us\" --headed",
+    "contact-us-tests-headless": "cypress run -e TAGS=\"@contact-us\"",
+    "login-tests-headed": "cypress run -e TAGS=\"@login\" --headed",
+    "login-and-smoke-pack": "cypress run -e TAGS=\"@smoke or @login\" --headed",
+    "smoke-pack-headed": "cypress run -e TAGS=\"@smoke\" --headed",
+    "regression-pack-headed": "cypress run -e TAGS=\"@regression and not @smoke\" --headed"
+  }
+}
