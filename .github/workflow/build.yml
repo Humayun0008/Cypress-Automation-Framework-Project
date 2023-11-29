@@ -16,5 +16,8 @@ jobs:
         run: npm run cypress:run
       # Install npm dependencies, cache them correctly
       # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+
+      - name: Cleanup
+      run: npm run cypress:cleanup
+      # - name: Cypress run
+      #   uses: cypress-io/github-action@v6
