@@ -15,5 +15,4 @@ class Base_PO {
         return cy.title();
     }
 }
-
 export default Base_PO;
