@@ -1,11 +1,64 @@
-name: Cypress Tests
-on: [push]
-jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4.1.1
+name: Cypress Test and Report
 
-    - name: Cypress.io
-      uses: cypress-io/github-action@v6.5.0
+on:
+  push:
+    branches:
+      - main  # Adjust branch name as needed
+
+jobs:
+  cypress-test:
+    name: Run Cypress Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests
+        run: npx cypress run
+
+  generate-report:
+    name: Generate Cucumber HTML report
+    runs-on: ubuntu-latest
+    needs: cypress-test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate report
+        run: node cucumber-html-report.js
+
+      - name: Archive report artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: cucumber-html-report
+          path: ./cypress/reports/html-multi-report/index.html  # Adjust path to the generated report
+
+  deploy-to-pages:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: generate-report
+    if: success()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download report artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: cucumber-html-report
+          path: ./cypress/reports/html-multi-report/index.html  # Adjust path to the generated report
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: gh-pages
+          folder: ./cypress/reports/html-multi-report/index.html  # Adjust path to the generated report
