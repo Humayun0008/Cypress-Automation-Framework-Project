@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Clean up previous report directory
+        run: rm -rf ./cypress/reports/html-multi-report  # Adjust path to the generated report
+
       - name: Generate report
         run: node cucumber-html-report.js
 
@@ -61,4 +64,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           branch: gh-pages
-          folder: ./cypress/reports/html-multi-report/index.html  # Adjust path to the generated report
+          folder: ./cypress/reports/html-multi-report/index.html # Adjust path to the generated report
