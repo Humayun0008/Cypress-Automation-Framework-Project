@@ -58,10 +58,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: cucumber-html-report
-          path: ./cypress/reports/github-report-floder/index.html  # Adjust path to the generated report
+          path: ./cypress/reports/Github-report/index.html  # Adjust path to the generated report
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
-          folder: ./cypress/reports/github-report-floder/index.html # Adjust path to the generated report
+          folder: ./cypress/reports/html-multi-report  # Adjust path to the generated report
